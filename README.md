@@ -42,4 +42,4 @@ Please note, this setup assumes you are deploying everything locally. If you pla
     void *publisher_n_listener_thread(void *arg)
 ```
 
-By updating the variable named localhost to the URL were you have deployed the multi-container applications.
+By updating the 'localhost' variable with the URL where you have deployed the multi-container applications.
