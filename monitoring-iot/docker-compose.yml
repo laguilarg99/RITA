@@ -1,0 +1,73 @@
+version: '3'
+services:
+  gcc_app1:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gcc_app1
+    restart: always
+    environment:
+      - DEVICE_ID=9eb2288f-522f-4997-8ae7-c9197482bf5b
+    networks:
+      -  monitoring_monitoring_network 
+    deploy:
+     resources:
+      reservations:
+        cpus: '0.2'
+        memory: 256M
+    command: bash -c "./myapp"
+
+  gcc_app2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gcc_app2
+    restart: always
+    environment:
+      - DEVICE_ID=2a3b4b8d-5108-4f24-ac5e-3de145b85048
+    networks:
+      -  monitoring_monitoring_network 
+    deploy:
+     resources:
+      reservations:
+        cpus: '0.2'
+        memory: 256M
+    command: bash -c "./myapp"
+
+  gcc_app3:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gcc_app3
+    restart: always
+    environment:
+      - DEVICE_ID=28452c54-8c6a-4c48-a252-3f6a5a8390fe
+    networks:
+      -  monitoring_monitoring_network 
+    deploy:
+     resources:
+      reservations:
+        cpus: '0.2'
+        memory: 256M
+    command: bash -c "./myapp"
+
+  gcc_app4:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gcc_app4
+    restart: always
+    environment:
+      - DEVICE_ID=6f396eae-c8cf-4f95-a5cc-5e686d1d3824
+    networks:
+      -  monitoring_monitoring_network 
+    deploy:
+     resources:
+      reservations:
+        cpus: '0.2'
+        memory: 256M
+    command: bash -c "./myapp"
+
+networks:
+   monitoring_monitoring_network :
+    external: true

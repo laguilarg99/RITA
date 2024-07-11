@@ -1,0 +1,55 @@
+version: '3.8'
+
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    networks:
+      - monitoring_network
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  mongodb:
+    image: mongo:4.4
+    container_name: mongodb
+    networks:
+      - monitoring_network
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/data/db
+
+  spring_app:
+    image: openjdk:17
+    container_name: spring_app
+    networks:
+      - monitoring_network
+    ports:
+      - "8080:8080"
+    depends_on:
+      - rabbitmq
+      - mongodb
+    volumes:
+      - ./monitoring-backend:/usr/src/app
+    working_dir: /usr/src/app
+    command: ./mvnw spring-boot:run
+
+  angular_app:
+    image: node:20  
+    container_name: angular_app
+    networks:
+      - monitoring_network
+    ports:
+      - "80:4200" 
+    volumes:
+      - ./monitoring-frontend:/usr/src/app  
+    working_dir: /usr/src/app
+    command: bash -c "npm install && npm start" 
+
+volumes:
+  mongo_data:
+
+networks:
+  monitoring_network:
+    driver: bridge
