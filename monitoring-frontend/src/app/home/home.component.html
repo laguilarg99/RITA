@@ -1,0 +1,186 @@
+<mat-grid-list cols="{{this.matGridColumns}}" rowHeight="{{this.matGridHeight}}">
+  <mat-grid-tile>
+    <mat-card class="section">
+      <mat-card-header class="section-title">
+        <mat-card-title>Organizations</mat-card-title>
+      </mat-card-header>
+      <mat-card-content [style.overflow]="'auto'" >
+        <mat-accordion>
+          @for ( organization of organizations.organizations; track organization) {
+              <mat-card (click)="getDevices(organization)">
+                <mat-expansion-panel hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{ organization.name }}
+                    </mat-panel-title>
+                    <mat-panel-description>
+                      {{organization.streetAddress}}
+                    </mat-panel-description>
+                    <div>
+                      <button mat-icon-button color="basic" (click)="deleteOrganization(organization)" aria-label="deleting Organization">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </mat-expansion-panel-header>
+                    <form [formGroup]="deviceForm">
+                      <div>
+                        <div>
+                          <mat-form-field>
+                            <mat-label for="name">Name </mat-label>
+                            <input matInput placeholder="" formControlName="name" required>
+                          </mat-form-field>
+                        </div>
+                        <div>
+                          <mat-form-field>
+                            <mat-label for="ip">IP </mat-label>
+                            <input matInput placeholder="" formControlName="ip" required>
+                          </mat-form-field>
+                        </div>
+                        <div>
+                          <mat-form-field>
+                            <mat-label for="port">Port </mat-label>
+                            <input matInput type="number" formControlName="port" required>
+                          </mat-form-field>
+                          <button mat-mini-fab color="primary" [disabled]="!deviceForm.valid" (click)="createDevice()" aria-label="Create Device for org">
+                            <mat-icon aria-hidden="false" aria-label="Example home icon" fontIcon="add"></mat-icon>
+                          </button>
+                        </div>
+                      </div>
+                    </form>
+                </mat-expansion-panel>
+              </mat-card>
+          } @empty {
+            <div>
+              <mat-error class="not-found">There are no organizations</mat-error>
+            </div>
+          }
+        </mat-accordion>
+      </mat-card-content>
+      <mat-card  class="organization-form">
+        <mat-card-content class="organization-form-content">
+          <form [formGroup]="organizationForm">
+            <div>
+              <mat-form-field>
+                <mat-label for="name">Name </mat-label>
+                <input matInput placeholder="" formControlName="name" required>
+              </mat-form-field>
+            </div>
+            <div>
+              <mat-form-field>
+                <mat-label for="streetAddress">Address</mat-label>
+                <input matInput placeholder="" formControlName="streetAdress" required>
+              </mat-form-field>
+            </div>
+          </form>
+          <button mat-raised-button [disabled]="!organizationForm.valid" color="primary" class="organization-form-content-button" (click)="createOrganization()">Create Organization</button>
+        </mat-card-content>
+      </mat-card>
+    </mat-card>
+  </mat-grid-tile>
+
+  <mat-grid-tile>
+    <mat-card class="section">
+      <mat-card-header class="section-title">
+        <mat-card-title>Devices {{this.selectedOrganization.name}}</mat-card-title>
+      </mat-card-header>
+      <mat-card-content [style.overflow]="'auto'">
+        <mat-accordion>
+          @for (device of devices.devices; track device) {
+              <mat-card (click)="getTasks(device)">
+                <mat-expansion-panel hideToggle>
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      {{ device.name }}
+                    </mat-panel-title>
+                    <mat-panel-title>
+                      {{ device.ip }}
+                    </mat-panel-title>
+                    <mat-panel-title>
+                      {{ device.port }}
+                    </mat-panel-title>
+                    <div>
+                      <button mat-icon-button [cdkCopyToClipboard]="copy(device.id)"> 
+                        <mat-icon>content_copy</mat-icon>
+                      </button>
+                      <button mat-icon-button [matMenuTriggerFor]="menu" aria-label="Example icon-button with a menu">
+                        <mat-icon>more_vert</mat-icon>
+                      </button>
+                      <mat-menu #menu="matMenu">
+                        <button mat-menu-item (click)="openTaskDialog(device.id)">
+                          <mat-icon aria-hidden="false" aria-label="Example add icon" fontIcon="add"></mat-icon>
+                          <span>Task</span>
+                        </button>
+                        <button mat-menu-item (click)="openSensorDialog()">
+                          <mat-icon aria-hidden="false" aria-label="Example add sensor" fontIcon="add"></mat-icon>
+                          <span>Sensor</span>
+                        </button>
+                      </mat-menu>
+                      <button mat-icon-button (click)="deleteDevice(device)" aria-label="deleting device">
+                        <mat-icon>delete</mat-icon>
+                      </button>
+                    </div>
+                  </mat-expansion-panel-header>
+                  
+                    <div class="change-scheduler">
+                      <form [formGroup]="schedulerForm">
+                        <mat-form-field>
+                          <mat-label>Scheduler</mat-label>
+                          <mat-select formControlName="scheduler">
+                            <mat-option value="RMS">RMS</mat-option>
+                            <mat-option value="EDF">EDF</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <button mat-mini-fab color="primary" class="button-for-scheduler" [disabled]="!schedulerForm.valid" (click)="changeScheduler(device)" aria-label="Change scheduler for device">
+                          <mat-icon aria-hidden="false" aria-label="Example send icon" fontIcon="send"></mat-icon>
+                        </button>
+                      </form>
+                    </div>
+
+                    <mat-card>
+                      <mat-card-header class="section-title">
+                        <mat-card-title>Tasks</mat-card-title>
+                      </mat-card-header>
+                      <mat-card-content [style.overflow]="'auto'">
+                        <mat-accordion>
+                          @for (task of this.tasks.tasks; track task) {
+                            <mat-card [style.border]="getBorder(task.status)" (click)="openMetricsDialog(task)">
+                              <mat-expansion-panel  class="unstyled-link" hideToggle>
+                                <mat-expansion-panel-header>
+                                  <mat-panel-title>
+                                    {{ task.name }}
+                                  </mat-panel-title>
+                                  <mat-panel-title>
+                                    {{ getSensorName(task.sensorId) }}
+                                  </mat-panel-title>
+                                  <mat-panel-title>
+                                    Port: {{ task.portNumber }}
+                                  </mat-panel-title>
+                                  <div>
+                                    <button mat-icon-button (click)="deleteTask(task)" aria-label="deleting device">
+                                      <mat-icon>delete</mat-icon>
+                                    </button>
+                                  </div>
+                                </mat-expansion-panel-header>
+                              </mat-expansion-panel>
+                            </mat-card>
+                          } @empty {
+                            <div>
+                              <mat-error class="not-found">There are no tasks</mat-error>
+                            </div>
+                          }
+                        </mat-accordion>
+                      </mat-card-content>
+                    </mat-card>
+                    
+                </mat-expansion-panel>
+              </mat-card>
+          } @empty {
+            <div>
+              <mat-error class="not-found">There are no devices</mat-error>
+            </div>
+          }
+        </mat-accordion>
+      </mat-card-content>
+    </mat-card>
+  </mat-grid-tile>
+</mat-grid-list>

@@ -1,0 +1,78 @@
+mat-card {
+    box-shadow: none;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    margin-bottom: 3%;
+    width: 100%;
+    cursor: pointer;
+}
+
+table {
+    width: 100%;
+}
+
+.change-scheduler{
+    margin-top: 5%;
+}
+
+.button-for-scheduler{
+    margin: 1%
+}
+
+.organization-form {
+    border: 1.5px solid black;
+    box-shadow: none !important;
+    display: flex;
+    margin-top: 1%;
+}
+
+.not-found {
+    margin-bottom: 15px;
+    padding: 16px;
+    width: auto;
+    border: 1px solid red;
+    border-radius: 5px;
+}
+
+.organization-form-content {
+    display: flex;
+    justify-content: center;
+}
+
+.organization-form-content-button {
+    display: flex;
+    margin-left: 10%;
+    top: 50%;
+    -ms-transform: translateY(-50%);
+    transform: translateY(-50%);
+}
+
+.mat-accordion .mat-expansion-panel:last-of-type {
+    border: none;
+    box-shadow: none;
+}
+
+.button {
+    display: flex;
+    justify-content: flex-end;
+}
+
+.mat-action-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section{
+    border: none;
+    box-shadow: none;
+    margin: 1%;
+    height: 100%;
+}
+
+.section-title{
+    margin-bottom: 2%;
+}
+
+mat-form-field {
+    margin: 1%;
+}

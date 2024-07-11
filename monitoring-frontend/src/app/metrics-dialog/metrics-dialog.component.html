@@ -1,0 +1,32 @@
+
+<h1 mat-dialog-title>
+    {{this.data.task.name}}
+    <div class="refresh-div">
+    <button class="refresh" mat-icon-button (click)="refreshData()">
+        <mat-icon>refresh</mat-icon>
+    </button>
+    </div>
+</h1>
+<mat-dialog-content>
+    <mat-tab-group animationDuration="0ms" (selectedTabChange)="changeChart($event)">
+        @for (metric of this.data.metricNames; track metric) {
+            <mat-tab label="{{metric}}">
+                <div id="chart">
+                    <apx-chart
+                      [series]="chartOptions.series!"
+                      [chart]="chartOptions.chart!"
+                      [xaxis]="chartOptions.xaxis!"
+                      [dataLabels]="chartOptions.dataLabels!"
+                      [grid]="chartOptions.grid!"
+                      [stroke]="chartOptions.stroke!"
+                      [title]="chartOptions.title!"
+                    ></apx-chart>
+                  </div>
+            </mat-tab>
+        } @empty {
+            <mat-tab label="Not found">
+                <mat-error class="not-found">No metrics</mat-error>
+            </mat-tab>
+        }
+    </mat-tab-group>
+</mat-dialog-content>

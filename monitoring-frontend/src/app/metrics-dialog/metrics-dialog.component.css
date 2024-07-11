@@ -1,0 +1,23 @@
+.not-found {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    padding: 16px;
+    width: auto;
+    border: 1px solid red;
+    border-radius: 5px;
+}
+
+.refresh-div {
+    display: flex;
+    justify-content: end;
+    margin-top: 15px;
+}
+
+.refresh {
+    border: none
+}
+
+#chart {
+    max-width: 90%;
+    margin: 35px auto;
+}

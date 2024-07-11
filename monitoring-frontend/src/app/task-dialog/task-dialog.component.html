@@ -1,0 +1,45 @@
+<h1 mat-dialog-title>Create Task</h1>
+<mat-dialog-content>
+  <form [formGroup]="taskForm">
+    <div>
+      <mat-form-field>
+        <mat-label for="name">Name </mat-label>
+        <input matInput type="text" id="name" formControlName="name" required/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="period">Period </mat-label>
+        <input matInput type="number" id="period" formControlName="period" required/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="cpuTime">CpuTime </mat-label>
+        <input matInput type="number" id="cpuTime" formControlName="cpuTime" required/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="maxResponseTime">MaxResponseTime </mat-label>
+        <input matInput type="number" id="maxResponseTime" formControlName="maxResponseTime" required/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="portNumber">PortNumber </mat-label>
+        <input matInput type="number" id="portNumber" formControlName="portNumber" required/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label for="portType">PortType </mat-label>
+        <input matInput type="text" id="portType" formControlName="portType" required/>
+      </mat-form-field>
+      <mat-form-field>
+        <mat-label>Sensor</mat-label>
+        <mat-select formControlName="sensor">
+          @for (sensor of this.data.sensors.sensors; track sensor) {
+            <mat-option value="{{sensor.name}}">{{sensor.name}}</mat-option>
+          }
+        </mat-select>
+      </mat-form-field>
+    </div>
+  </form>
+  </mat-dialog-content>
+  <mat-dialog-actions>
+    <button mat-button (click)="onNoClick()">No Thanks</button>
+    <button mat-button (click)="buildTask()" [mat-dialog-close]="this.task" [disabled]="!taskForm.valid">Ok</button>
+  </mat-dialog-actions>
+  
+  
