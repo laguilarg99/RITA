@@ -32,11 +32,8 @@ public class TaskController {
 
     @PostMapping("/tasks/save")
     public Task createTask(@RequestBody Task task) {
-        Task auxTask = taskRepository.getTask(task.getName());
-        List<String> taskNamesByDeviceId = taskRepository.getTasksByDeviceId(task.getDeviceId())
-                                                            .stream().map(Task::getName).collect(Collectors.toList());
-       
-        if(auxTask.getName() != null && taskNamesByDeviceId.contains(auxTask.getName())) {
+        List<Task> tasks = taskRepository.getTasksByDeviceId(task.getDeviceId());
+        if(task.getName() != null && tasks.stream().anyMatch(t -> t.getName().equals(task.getName()))) {
             return new Task("", "", "", 0, 0, 0, 0, "", null, null);
         }
         
