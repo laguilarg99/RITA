@@ -212,8 +212,8 @@ void publish_message(amqp_connection_state_t conn, char const *queue_name, char 
 
 
 void *publisher_n_listener_thread(void *arg) {
-    char const *hostname = "localhost";
-    int port = 5672;
+    char const *hostname = "rt.ugr.es";
+    int port = 8968;
 
     amqp_connection_state_t conn;
     amqp_socket_t *socket = NULL;
